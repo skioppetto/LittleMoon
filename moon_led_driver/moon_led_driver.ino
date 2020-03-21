@@ -1,0 +1,31 @@
+// moon driver library
+
+const int enablePin = 3;
+const int clockPin = 5;
+const int dataPin = 4;
+const int latchPin = 6;
+const byte fixed_values[] = {0x00, 0x00, 0x80, 0x80, 0x80, 0xC0, 0xC0, 0xC0, 0xE0, 0xE0, 0xF0, 0xF0, 0xF0, 0xF8, 0xF8, 0xFC, 0x7C, 0x7C, 0x3C, 0x3C, 0x3C, 0x1C, 0x1C, 0x1C, 0xC,  0xC, 0x4, 0x4, 0x4};
+const byte faded_values[] = {0x00, 0x80, 0x00, 0x40, 0x40, 0x00, 0x20, 0x20, 0x00, 0x10, 0x00, 0x8 , 0x8 , 0x00, 0x4 , 0x00, 0x80, 0x00, 0x40, 0x40, 0x00, 0x20, 0x20, 0x00, 0x10, 0x0, 0x8, 0x8, 0x00};
+const int  faded_pwm[]    = {0   , 150 , 0  , 220 , 150   , 0   , 220  , 150 , 0   , 150 , 0   , 220  , 150 , 0   , 150 , 0   , 150 , 0   , 150 , 220  , 0   , 150 , 220  , 0   , 150 , 0  ,150, 220 , 0};
+void setup() {
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+  pinMode(enablePin, OUTPUT);
+}
+
+void loop() {
+  for (int i = 0; i<30;i++){
+    set_moon(i);
+    delay(500);    
+  }
+}
+
+void set_moon (int j){
+    
+    digitalWrite(latchPin, LOW);
+    shiftOut(dataPin, clockPin, MSBFIRST, faded_values[j]); //fade  //(100) 0x0010 (110) 0x0018 (111) 0x001C (001)0x0004 (011) 0x000C (101) 0x0014 (010) 0x0008
+    shiftOut(dataPin, clockPin, MSBFIRST, fixed_values[j]); //fixed //(100) 0x0010 (110) 0x0018 (111) 0x001C (001)0x0004 (011) 0x000C (101) 0x0014 (010) 0x0008
+    digitalWrite(latchPin, HIGH);
+    analogWrite (enablePin, faded_pwm[j]);
+  }
