@@ -12,7 +12,7 @@ int main()
     printf("%d\n", getMoonPhase (2030, 4, 6));
     printf("%d\n", getMoonPhase (2030, 4, 7));
     printf("%d\n", getMoonPhase (2030, 4, 8));
-    printf(" %d\n", getMoonPhase (2030, 4, 9));
+    printf("%d\n", getMoonPhase (2030, 4, 9));
     printf("%d\n", getMoonPhase (2030, 4, 10));
     printf("%d\n", getMoonPhase (2030, 4, 11));
     printf("%d\n", getMoonPhase (2030, 4, 12));
