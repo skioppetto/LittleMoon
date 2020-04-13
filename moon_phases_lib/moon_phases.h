@@ -11,6 +11,13 @@
 15	        full moon
 16 to 29	waning moon
 */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern int getMoonPhase (int year, int month, int day);
+#ifdef __cplusplus
+}
+#endif
 #endif
 
