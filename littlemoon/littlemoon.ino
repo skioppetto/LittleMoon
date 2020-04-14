@@ -181,11 +181,6 @@ void moonUpdate() {
     matrixPhase = phase;
   }
   matrixShowMoon(matrixPhase);
-  Serial.print("setting moon: ");
-  Serial.print("phase: ");
-  Serial.print(phase);
-  Serial.print("\tconverted: ");
-  Serial.println(matrixPhase);
 }
 
 //gets called when WiFiManager enters configuration mode
@@ -194,7 +189,6 @@ void configModeCallback (WiFiManager *myWiFiManager) {
 }
 // sketch
 void setup() {
-  Serial.begin(9600);
   pinMode(PIN_RST_BUTTON, INPUT_PULLUP);
   matrixSetup();
   displaySetup();
