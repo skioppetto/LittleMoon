@@ -33,6 +33,7 @@ uint8_t         conf[]    = {SEG_G | SEG_E | SEG_D, SEG_G | SEG_E | SEG_D | SEG_
 uint8_t         eapi[]    = {SEG_D | SEG_E | SEG_G | SEG_F | SEG_A, SEG_D | SEG_E | SEG_G | SEG_A | SEG_B | SEG_C, SEG_E | SEG_G | SEG_A | SEG_B | SEG_F, SEG_E | SEG_A};
 uint8_t         econ[]    = {SEG_D | SEG_E | SEG_G | SEG_F | SEG_A, SEG_G | SEG_E | SEG_D, SEG_G | SEG_E | SEG_D | SEG_C, SEG_G | SEG_E | SEG_C};
 uint8_t         empty[]   = {0x00, 0x00, 0x00, 0x00};
+const int       DISPLAY_EMPTY = 0;
 const int       DISPLAY_CONN = 1;
 const int       DISPLAY_CONF = 2;
 const int       DISPLAY_EAPI = 3;
@@ -63,6 +64,11 @@ void display_blink(uint8_t data[]) {
     display.setSegments(empty);
   }
   display_empty = !display_empty;
+}
+void displayEmpty() {
+    display_blinker.detach();
+    display.setSegments(empty);
+    display_set = DISPLAY_EMPTY;
 }
 void displayConn() {
   if (display_set != DISPLAY_CONN) {
@@ -155,11 +161,13 @@ void wifiManagerSetup() {
   wifiManager.setAPCallback(configModeCallback);
 }
 void wifiManagerConnect() {
+  displayConn();
   if (!wifiManager.autoConnect("LittleMoonAP")) {
     delay(3000);
     ESP.reset();
     delay(5000);
   }
+  displayEmpty();
 }
 Ticker moon_ticker;
 void moonUpdate() {
@@ -193,7 +201,6 @@ void setup() {
   matrixSetup();
   displaySetup();
   wifiManagerSetup();
-  displayConn();
   wifiManagerConnect();
   configTimeSetup();
   moonUpdate();
